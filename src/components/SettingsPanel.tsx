@@ -16,6 +16,37 @@ interface SettingsPanelProps {
   onDiskToggle: (mountPoint: string) => void;
 }
 
+const getDiskType = (disk: DiskStats): string => {
+  const deviceName = (disk.device_name || '').toLowerCase();
+  const mountPoint = (disk.mount_point || '').toLowerCase();
+  const fsType = (disk.fs_type || '').toLowerCase();
+
+  if (deviceName.includes('loop') || fsType === 'squashfs' || fsType === 'iso9660') {
+    return 'Image';
+  }
+
+  if (fsType.includes('nfs') || fsType.includes('smb') || fsType.includes('cifs') ||
+      deviceName.startsWith('//') || deviceName.includes(':')) {
+    return 'Network';
+  }
+
+  if (fsType === 'tmpfs' || fsType === 'devtmpfs' || mountPoint.includes('/snap/')) {
+    return 'Virtual';
+  }
+
+  if (mountPoint.includes('/media/') || mountPoint.includes('/mnt/') ||
+      mountPoint.includes('removable') || deviceName.includes('usb')) {
+    return 'External';
+  }
+
+  if (deviceName.startsWith('/dev/sd') || deviceName.startsWith('/dev/nvme') ||
+      deviceName.startsWith('/dev/hd') || deviceName.startsWith('disk')) {
+    return 'Internal';
+  }
+
+  return 'Other';
+};
+
 export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   isOpen,
   onClose,
@@ -139,7 +170,12 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                       className="w-5 h-5 text-blue-500 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
                     />
                     <div className="flex-1">
-                      <div className="font-medium text-gray-700 dark:text-gray-300">{disk.device_name}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="font-medium text-gray-700 dark:text-gray-300">{disk.device_name}</div>
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium">
+                          {getDiskType(disk)}
+                        </span>
+                      </div>
                       <div className="text-xs text-gray-500 dark:text-gray-400">{disk.mount_point}</div>
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
