@@ -20,28 +20,45 @@ const getDiskType = (disk: DiskStats): string => {
   const deviceName = (disk.device_name || '').toLowerCase();
   const mountPoint = (disk.mount_point || '').toLowerCase();
   const fsType = (disk.fs_type || '').toLowerCase();
+  const options = (disk.options || '').toLowerCase();
 
+  // Check for loop devices and image filesystems
   if (deviceName.includes('loop') || fsType === 'squashfs' || fsType === 'iso9660') {
     return 'Image';
   }
 
+  // Check for network filesystems
   if (fsType.includes('nfs') || fsType.includes('smb') || fsType.includes('cifs') ||
       deviceName.startsWith('//') || deviceName.includes(':')) {
     return 'Network';
   }
 
+  // Check for virtual/temporary filesystems
   if (fsType === 'tmpfs' || fsType === 'devtmpfs' || mountPoint.includes('/snap/')) {
     return 'Virtual';
   }
 
+  // Check for removable/external media
   if (mountPoint.includes('/media/') || mountPoint.includes('/mnt/') ||
       mountPoint.includes('removable') || deviceName.includes('usb')) {
     return 'External';
   }
 
+  // Check for read-only filesystems (often system or recovery partitions)
+  if (options.includes('ro,') || options.startsWith('ro')) {
+    return 'System';
+  }
+
+  // Check for internal storage devices
   if (deviceName.startsWith('/dev/sd') || deviceName.startsWith('/dev/nvme') ||
-      deviceName.startsWith('/dev/hd') || deviceName.startsWith('disk')) {
+      deviceName.startsWith('/dev/hd') || deviceName.startsWith('disk') ||
+      deviceName.includes('mapper')) {
     return 'Internal';
+  }
+
+  // Special filesystems like ZFS
+  if (fsType === 'zfs' || fsType === 'btrfs') {
+    return 'Advanced';
   }
 
   return 'Other';

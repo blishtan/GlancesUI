@@ -43,6 +43,7 @@ class GlancesAPI {
       }
 
       const data = await response.json();
+      console.log('Response received:', data);
       return data;
     } catch (error) {
       if (error instanceof Error) {

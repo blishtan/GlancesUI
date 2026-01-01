@@ -37,6 +37,7 @@ export interface DiskStats {
   used: number;
   free: number;
   percent: number;
+  options: string;
 }
 
 export interface NetworkStats {
