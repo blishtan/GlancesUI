@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset Storage</title>
+</head>
+<body>
+    <h1>Storage Reset</h1>
+    <button onclick="reset()">Clear glances-settings</button>
+    <pre id="output"></pre>
+    <script>
+        function reset() {
+            const before = localStorage.getItem('glances-settings');
+            document.getElementById('output').textContent = 'Before:\n' + before;
+            localStorage.removeItem('glances-settings');
+            document.getElementById('output').textContent += '\n\nAfter: ' + localStorage.getItem('glances-settings');
+        }
+        document.getElementById('output').textContent = 'Current:\n' + localStorage.getItem('glances-settings');
+    </script>
+</body>
+</html>
