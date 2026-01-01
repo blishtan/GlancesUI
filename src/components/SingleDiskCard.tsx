@@ -25,7 +25,7 @@ export const SingleDiskCard: React.FC<SingleDiskCardProps> = ({
 }) => {
   if (displayMode === 'minimal') {
     return (
-      <StatCard title={disk.mount_point} icon={<HardDrive size={24} />} size={size}>
+      <StatCard title={`Disk - ${disk.device_name}`} icon={<HardDrive size={24} />} size={size}>
         <div className="flex items-center justify-between mb-2">
           <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {disk.percent.toFixed(1)}%
@@ -37,7 +37,7 @@ export const SingleDiskCard: React.FC<SingleDiskCardProps> = ({
   }
 
   return (
-    <StatCard title={disk.mount_point} icon={<HardDrive size={24} />} size={size}>
+    <StatCard title="Disk" icon={<HardDrive size={24} />} size={size}>
       <div className="mb-2">
         <span className="text-xs text-gray-500 dark:text-gray-400">{disk.device_name}</span>
       </div>
