@@ -172,7 +172,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <div className="font-medium text-gray-700 dark:text-gray-300">{disk.device_name}</div>
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium">
                           {getDiskType(disk)}
                         </span>
                       </div>

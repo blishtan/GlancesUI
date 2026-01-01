@@ -68,7 +68,7 @@ export const SingleDiskCard: React.FC<SingleDiskCardProps> = ({
           <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {disk.percent.toFixed(1)}%
           </span>
-          <span className="text-xs px-2 py-1 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium">
+          <span className="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium">
             {diskType}
           </span>
         </div>
@@ -81,7 +81,7 @@ export const SingleDiskCard: React.FC<SingleDiskCardProps> = ({
     <StatCard title="Disk" icon={<HardDrive size={24} />} size={size}>
       <div className="mb-2 flex items-center justify-between">
         <span className="text-xs text-gray-500 dark:text-gray-400">{disk.device_name}</span>
-        <span className="text-xs px-2 py-1 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium">
+        <span className="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium">
           {diskType}
         </span>
       </div>
