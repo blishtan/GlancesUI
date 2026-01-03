@@ -2,11 +2,12 @@
 
 This guide explains how to deploy GlancesUI using Docker images from GitHub Container Registry.
 
+**NEW**: Glances is now included in the docker-compose setup! No need to install or run Glances separately.
+
 ## Prerequisites
 
 - Docker and Docker Compose installed
 - GitHub account
-- Access to a Glances server
 
 ## Setup Steps
 
@@ -52,14 +53,15 @@ cat > .env << EOF
 # Replace with your GitHub username (lowercase)
 GITHUB_USERNAME=your-github-username
 
-# Glances server configuration
-GLANCES_HOST=localhost
-GLANCES_PORT=61208
-
-# UI Port
+# UI Port (default: 3000)
 UI_PORT=3000
+
+# Optional: Glances port (default: 61208)
+GLANCES_PORT=61208
 EOF
 ```
+
+> **Note**: Glances will run automatically in its own container. You don't need to install or configure it separately!
 
 **Step 4: Pull and run**
 ```bash
@@ -76,37 +78,48 @@ The UI will be available at `http://localhost:3000`
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `GITHUB_USERNAME` | Your GitHub username (lowercase) | Required |
-| `GLANCES_HOST` | Glances server hostname/IP | `localhost` |
-| `GLANCES_PORT` | Glances server port | `61208` |
+| `GLANCES_PORT` | Port where Glances will be accessible (optional) | `61208` |
 | `UI_PORT` | Port where UI will be accessible | `3000` |
+
+### What Gets Deployed
+
+The docker-compose setup includes **two containers**:
+
+1. **glances** - The Glances monitoring system (official image)
+   - Runs with host PID namespace for accurate system monitoring
+   - Automatically starts in web server mode
+   - Monitors Docker containers (if available)
+
+2. **glances-ui** - The beautiful UI (your custom image)
+   - Connects to the Glances container automatically
+   - Serves the web interface
 
 ### Example Configurations
 
-**Local Glances:**
+**Standard Setup (Recommended):**
 ```env
 GITHUB_USERNAME=yourname
-GLANCES_HOST=localhost
-GLANCES_PORT=61208
 UI_PORT=3000
 ```
 
-**Remote Glances:**
+**Custom Ports:**
 ```env
 GITHUB_USERNAME=yourname
-GLANCES_HOST=192.168.1.100
-GLANCES_PORT=61208
 UI_PORT=8080
+GLANCES_PORT=61208
 ```
 
-**Multiple Instances:**
-You can run multiple instances by changing the `UI_PORT`:
-```bash
-# Instance 1
-UI_PORT=3000 docker-compose up -d
+### Using an External Glances Server
 
-# Instance 2 (copy docker-compose.yml to a new directory first)
-UI_PORT=3001 docker-compose up -d
-```
+If you already have Glances running elsewhere and don't want the bundled Glances container:
+
+1. Edit `docker-compose.yml` and comment out the `glances` service
+2. Update the `glances-ui` environment:
+   ```yaml
+   environment:
+     - GLANCES_HOST=your-external-server
+     - GLANCES_PORT=61208
+   ```
 
 ## Docker Image Tags
 
@@ -154,14 +167,29 @@ If you get authentication errors:
 
 ### UI shows connection error
 
-1. Check Glances is running:
+1. Check both containers are running:
    ```bash
-   curl http://${GLANCES_HOST}:${GLANCES_PORT}/api/4/all
+   docker-compose ps
    ```
 
-2. Check docker logs:
+2. Check Glances container logs:
+   ```bash
+   docker-compose logs glances
+   ```
+
+3. Check UI container logs:
    ```bash
    docker-compose logs glances-ui
+   ```
+
+4. Test Glances API directly:
+   ```bash
+   curl http://localhost:61208/api/4/all
+   ```
+
+5. Verify containers can communicate:
+   ```bash
+   docker-compose exec glances-ui ping -c 3 glances
    ```
 
 3. Verify environment variables:

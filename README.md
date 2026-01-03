@@ -27,12 +27,31 @@ A beautiful, modern web interface for monitoring system statistics using [Glance
 - Network Activity (RX/TX for all interfaces)
 - Top Processes (sorted by CPU usage)
 
-## Prerequisites
+## Quick Start with Docker (Recommended)
+
+The easiest way to run GlancesUI is with Docker Compose. Glances is included automatically!
+
+```bash
+# Download the docker-compose.yml
+curl -O https://raw.githubusercontent.com/blishtan/GlancesUI/develop/docker-compose.yml
+
+# Create .env file
+echo "GITHUB_USERNAME=blishtan" > .env
+
+# Start both Glances and the UI
+docker-compose up -d
+```
+
+Visit `http://localhost:3000` - that's it! Both Glances and the UI are running.
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+
+## Development Setup
+
+### Prerequisites
 
 1. **Glances** must be installed and running in API mode
 2. **Node.js** 18+ and npm/yarn/pnpm
-
-## Installation
 
 ### 1. Install and Start Glances
 
