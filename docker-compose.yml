@@ -19,7 +19,7 @@ services:
     command: python3 -m glances -C /glances/conf/glances.conf $GLANCES_OPT
 
   glances-ui:
-    image: ghcr.io/${GITHUB_USERNAME}/glancesui:latest
+    image: ghcr.io/blishtan/glancesui:latest
     container_name: glances-ui
     networks:
       - glances-network
