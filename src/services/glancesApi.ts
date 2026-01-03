@@ -2,11 +2,9 @@ import { GlancesData } from '../types/glances';
 
 class GlancesAPI {
   private baseUrl: string;
-  private version: string;
 
-  constructor(baseUrl: string = '/api', version: string = '4') {
+  constructor(baseUrl: string = '/api') {
     this.baseUrl = baseUrl;
-    this.version = version;
   }
 
   private async fetchData<T>(endpoint: string): Promise<T> {

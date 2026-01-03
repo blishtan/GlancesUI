@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Settings, RefreshCw, AlertCircle } from 'lucide-react';
 import { useGlancesData } from './hooks/useGlancesData';
 import { StatisticConfig, DisplayMode, AppSettings } from './types/glances';
@@ -26,7 +26,7 @@ const DEFAULT_SETTINGS: AppSettings = {
 };
 
 function App() {
-  const { data, error, isLoading, isConnected, refetch } = useGlancesData(2000);
+  const { data, error, isLoading, refetch } = useGlancesData(2000);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const [settings, setSettings] = useState<AppSettings>(() => {
