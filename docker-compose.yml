@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   glances-ui:
-    build: .
+    image: ghcr.io/${GITHUB_USERNAME}/glancesui:latest
     container_name: glances-ui
     ports:
-      - "3000:80"
+      - "${UI_PORT:-3000}:80"
     environment:
       - GLANCES_HOST=${GLANCES_HOST:-localhost}
       - GLANCES_PORT=${GLANCES_PORT:-61208}
