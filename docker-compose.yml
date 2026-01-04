@@ -11,12 +11,10 @@ services:
       - glances-network
     ports:
       - "61208:61208"
-    environment:
-      - GLANCES_OPT=-w
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /run/user/1000/podman/podman.sock:/run/user/1000/podman/podman.sock:ro
-    command: python3 -m glances -C /glances/conf/glances.conf $GLANCES_OPT
+    command: python3 -m glances -C /glances/conf/glances.conf -w
 
   glances-ui:
     image: ghcr.io/blishtan/glancesui:latest
